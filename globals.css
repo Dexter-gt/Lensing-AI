@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+:root {
+  --charcoal: #0b0e0c;
+  --ink: #12160f;
+  --paper: #f5f4ee;
+  --paper-dim: #e9e8e0;
+  --graphite: #8b9188;
+  --graphite-dark: #565c53;
+  --line: rgba(245, 244, 238, 0.1);
+  --line-soft: rgba(11, 14, 12, 0.1);
+  --accent: #a5ff1b;
+  --accent-deep: #7fd400;
+  --accent-dim: rgba(165, 255, 27, 0.14);
+}
+
+@theme inline {
+  --color-charcoal: var(--charcoal);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-paper-dim: var(--paper-dim);
+  --color-graphite: var(--graphite);
+  --color-graphite-dark: var(--graphite-dark);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-deep: var(--accent-deep);
+  --color-accent-dim: var(--accent-dim);
+
+  /* Editorial serif for display type (headlines, node labels that carry
+     weight) paired with a clean system sans for body and metadata — a
+     business-publication pairing rather than a "futuristic AI" typeface.
+     Both are system/OS-shipped stacks so nothing needs to be bundled or
+     fetched from a font CDN. */
+  --font-display: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  --font-body: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--charcoal);
+}
+
+body {
+  background: var(--charcoal);
+  color: var(--paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--charcoal);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.015em;
+  font-weight: 500;
+}
+
+/* A single thin vertical spine used by the connected-system diagrams
+   (LensingBrain, Hero) instead of boxing every element in its own card. */
+.spine {
+  position: relative;
+}
+.spine::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+  transform: translateX(-50%);
+}
+
+/* Reveal-on-scroll: one restrained mechanism used everywhere,
+   rather than a different entrance animation per section. */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.animate-drift {
+  animation: drift 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .animate-drift {
+    animation: none !important;
+  }
+}
+
+/* Signal marker: a small square used as a category indicator instead of
+   pill-shaped badges everywhere. */
+.signal-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.container-page {
+  width: 100%;
+  max-width: 78rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
